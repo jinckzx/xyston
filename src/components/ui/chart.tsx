@@ -1,21 +1,14 @@
-// import React from 'react';
-// import * as RechartsPrimitive from 'recharts';
-// import {
-//   NameType,
-//   Payload,
-//   ValueType,
-// } from 'recharts/types/component/DefaultTooltipContent';
-
-// import { cn } from '@/lib/utils';
-import React from 'react';
+import * as React from 'react';
+import * as RechartsPrimitive from 'recharts';
 import {
-  Tooltip as RechartsTooltip,
-  Legend as RechartsLegend,
-  ResponsiveContainer,
-} from 'recharts';
+  NameType,
+  Payload,
+  ValueType,
+} from 'recharts/types/component/DefaultTooltipContent';
+
 import { cn } from '@/lib/utils';
 
-//Format: { THEME_NAME: CSS_SELECTOR }
+// Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: '', dark: '.dark' } as const;
 
 export type ChartConfig = {
@@ -373,3 +366,4 @@ export {
   ChartLegendContent,
   ChartStyle,
 };
+
