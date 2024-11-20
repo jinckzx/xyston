@@ -1,11 +1,18 @@
-import React from 'react';
-import * as RechartsPrimitive from 'recharts';
-import {
-  NameType,
-  Payload,
-  ValueType,
-} from 'recharts/types/component/DefaultTooltipContent';
+// import React from 'react';
+// import * as RechartsPrimitive from 'recharts';
+// import {
+//   NameType,
+//   Payload,
+//   ValueType,
+// } from 'recharts/types/component/DefaultTooltipContent';
 
+// import { cn } from '@/lib/utils';
+import React from 'react';
+import {
+  Tooltip as RechartsTooltip,
+  Legend as RechartsLegend,
+  ResponsiveContainer,
+} from 'recharts';
 import { cn } from '@/lib/utils';
 
 //Format: { THEME_NAME: CSS_SELECTOR }
