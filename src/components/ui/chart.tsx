@@ -44,11 +44,13 @@ function useChart() {
 // ChartContainer
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<'div'> & {
+  {
+    id?: string;
+    className?: string;
     config: ChartConfig;
     children: React.ComponentProps<typeof ResponsiveContainer>['children'];
   }
->(({ id, className, children, config, ...props }, ref) => {
+>(({ id, className, children, config }, ref) => {
   const uniqueId = React.useId();
   const chartId = `chart-${id || uniqueId.replace(/:/g, '')}`;
 
@@ -61,7 +63,6 @@ const ChartContainer = React.forwardRef<
           "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
           className
         )}
-        {...props}
       >
         <ChartStyle id={chartId} config={config} />
         <ResponsiveContainer>{children}</ResponsiveContainer>
@@ -109,29 +110,29 @@ ${colorConfig
 const ChartTooltip = RechartsTooltip;
 
 // ChartTooltipContent
-const ChartTooltipContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<typeof RechartsTooltip> &
-    React.ComponentProps<'div'> & {
-      hideLabel?: boolean;
-      hideIndicator?: boolean;
-      indicator?: 'line' | 'dot' | 'dashed';
-      nameKey?: string;
-      labelKey?: string;
-    }
->(
+interface ChartTooltipContentProps {
+  active?: boolean;
+  payload?: Payload<ValueType, NameType>[];
+  className?: string;
+  hideLabel?: boolean;
+  label?: string;
+  labelFormatter?: (value: any, payload: Payload<ValueType, NameType>[]) => React.ReactNode;
+  labelClassName?: string;
+  color?: string;
+  nameKey?: string;
+  labelKey?: string;
+}
+
+const ChartTooltipContent = React.forwardRef<HTMLDivElement, ChartTooltipContentProps>(
   (
     {
       active,
       payload,
       className,
-      indicator = 'dot',
       hideLabel = false,
-      hideIndicator = false,
       label,
       labelFormatter,
       labelClassName,
-      formatter,
       color,
       nameKey,
       labelKey,
@@ -180,18 +181,20 @@ const ChartTooltipContent = React.forwardRef<
       >
         {tooltipLabel}
         <div className="grid gap-1.5">
-          {payload.map((item, index) => {
+          {payload.map((item) => {
             const key = `${nameKey || item.name || item.dataKey || 'value'}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
-            const indicatorColor = color || item.payload.fill || item.color;
+            const indicatorColor = color || item.payload?.fill || item.color;
 
             return (
               <div
                 key={item.dataKey}
                 className="flex items-center gap-2"
-                style={{
-                  '--indicator-color': indicatorColor,
-                }}
+                style={
+                  {
+                    '--indicator-color': indicatorColor,
+                  } as React.CSSProperties
+                }
               >
                 <span>{itemConfig?.label || item.name}</span>
                 <span>{item.value}</span>
