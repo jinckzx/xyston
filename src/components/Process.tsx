@@ -36,7 +36,7 @@ export function Process() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, index) => (
+          {steps.map((step, _index) => (
             <Card key={step.title} className="relative group">
               <CardContent className="pt-6">
                 <div className="absolute -top-6 left-6">
